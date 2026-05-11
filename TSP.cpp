@@ -42,6 +42,25 @@ bool TSP::readGraph() {
     return true;
 }
 
+int TSP::greedyTour() {
+    vector<bool> used(n, false);
+    int cur = 0, total = 0;
+    used[0] = true;
+    for (int i = 0; i < n-1; ++i) {
+        int next = -1, minD = INT_MAX;
+        for (int j = 0; j < n; ++j)
+            if (!used[j] && graph[cur][j] < minD) {
+                next = j;
+                minD = graph[cur][j];
+            }
+        total += minD;
+        cur = next;
+        used[cur] = true;
+    }
+    total += graph[cur][0];
+    return total;
+}
+
 int TSP::firstMin(int i) {
     int min = INT_MAX;
     for (int k = 0; k < n; k++)
@@ -116,6 +135,7 @@ void TSP::solve() {
     int* curr_path = new int[n + 1];
     std::memset(curr_path, -1, (n + 1) * sizeof(int));
     int curr_bound = 0;
+    final_res = greedyTour();
 
     for (int i = 0; i < n; i++)
         curr_bound += (firstMin(i) + secondMin(i));

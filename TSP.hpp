@@ -20,6 +20,7 @@ private:
 public:
     TSP();
     bool readGraph();
+    int greedyTour();
     void solve();
     void printResult() const;
     int getResult() const;
